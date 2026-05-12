@@ -63,8 +63,8 @@ void insertarTermino(Polinomio* p, float coeficiente, int exponente) {
         actual->siguiente->anterior = nuevo;
     }else{
         p->cola = nuevo;
-        actual->siguiente = nuevo;
     }
+    actual->siguiente = nuevo;
 }
 
 void eliminarTermino(Polinomio* p, int exponente) {
@@ -186,6 +186,48 @@ void mostrarPolinomio(Polinomio* p) {
     printf("\n");
 }
 
+char* polinomioACadena(Polinomio* p) {
+    char* cadena = (char*) malloc(256);
+    cadena[0] = '\0';
+
+    if (p == NULL || p->cabeza == NULL) {
+        strcat(cadena, "0");
+        return cadena;
+    }
+
+    Nodo* actual = p->cabeza;
+    int primero = 1;
+    char temp[64];
+
+    while (actual != NULL) {
+        float coef = actual->termino.coeficiente;
+        int exp = actual->termino.exponente;
+        int esPositivo = (coef ==  1);
+        int esNegativo = (coef == -1);
+
+        if (!primero && coef > 0)
+            strcat(cadena, "+");
+        primero = 0;
+
+        if (exp == 0) {
+            sprintf(temp, "%.g", coef);
+        } else if (exp == 1) {
+            if(esPositivo) sprintf(temp, "x");
+            else if (esNegativo) sprintf(temp, "-x");
+            else sprintf(temp, "%.gx", coef);
+        } else {
+            if (esPositivo) sprintf(temp, "x^%d", exp);
+            else if (esNegativo) sprintf(temp, "-x^%d", exp);
+            else sprintf(temp, "%.gx^%d", coef, exp);
+        }
+
+        strcat(cadena, temp);
+        actual = actual->siguiente;
+    }
+
+    return cadena;
+}
+
 // main.c - No habia archivo creado entonces se unio el polinomio.c el main.c
 
  int main() {
@@ -253,9 +295,16 @@ void mostrarPolinomio(Polinomio* p) {
     printf("P7: "); mostrarPolinomio(p7);
     printf("P7(2) = %.2f\n", evaluacionPolinomio(p7, 2));
     printf("Esperado: 17\n");
+    printf("\n");
+
+    printf("=== Caso 7: Conversión de polinomio a cadena ===\n");
+    char* cadena = polinomioACadena(p1);
+    printf("Cadena: %s\n", cadena);
+    free(cadena);
+    printf("\n");
 
     printf("=== Los muchachos completaron el proyecto exitosamente ===\n");
-    printf("=== Ponganos 10 profa :( ===");
+    printf("=== Ponganos 10 profa :( ===\n");
 
     return 0;
 }

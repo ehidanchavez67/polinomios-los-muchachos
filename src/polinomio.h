@@ -3,6 +3,7 @@
 
 #include<stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 typedef struct Termino {
     float coeficiente;
@@ -31,5 +32,6 @@ float potencia(float base, int exp);
 Polinomio* sumaPolinomios(Polinomio *p1, Polinomio *p2);
 Polinomio* multiplicacionPolinomios(Polinomio *p1, Polinomio *p2);
 void mostrarPolinomio(Polinomio *p);
+char* polinomioACadena(Polinomio* p);
 
 #endif
